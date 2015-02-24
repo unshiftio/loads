@@ -1,0 +1,26 @@
+{
+  "name": "loads",
+  "version": "0.0.0",
+  "description": "Dedicated listening for xhr requests.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unshiftio/loads"
+  },
+  "keywords": [
+    "loads",
+    "xhr",
+    "load",
+    "request",
+    "ajax"
+  ],
+  "author": "Arnout Kazemier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unshiftio/loads/issues"
+  },
+  "homepage": "https://github.com/unshiftio/loads"
+}
