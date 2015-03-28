@@ -1,5 +1,17 @@
 # loads
 
+[![Made by unshift][made-by]](http://unshift.io)[![Version
+npm][version]](http://browsenpm.org/package/loads)[![Build
+Status][build]](https://travis-ci.org/unshiftio/loads)[![Dependencies][david]](https://david-dm.org/unshiftio/loads)[![Coverage
+Status][cover]](https://coveralls.io/r/unshiftio/loads?branch=master)[![IRC channel][irc]](http://webchat.freenode.net/?channels=unshift)
+
+[made-by]: https://img.shields.io/badge/made%20by-unshift-00ffcc.svg?style=flat-square
+[version]: https://img.shields.io/npm/v/loads.svg?style=flat-square
+[build]: https://img.shields.io/travis/unshiftio/loads/master.svg?style=flat-square
+[david]: https://img.shields.io/david/unshiftio/loads.svg?style=flat-square
+[cover]: https://img.shields.io/coveralls/unshiftio/loads/master.svg?style=flat-square
+[irc]: https://img.shields.io/badge/IRC-irc.freenode.net%23unshift-00a8ff.svg?style=flat-square
+
 Loads is a small helper library which automatically assign and listen to the
 various of XHR event hooks and emit the corrected and normalized responses over
 a supplied EventEmitter instance.
