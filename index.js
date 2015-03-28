@@ -125,6 +125,8 @@ function loads(xhr, ee, streaming) {
 
     ee.emit('end');
   });
+
+  return xhr;
 }
 
 //
