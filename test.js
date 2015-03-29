@@ -86,6 +86,10 @@ describe('loads', function () {
       next();
     });
 
-    loads(xhr, ee).emit('timeout');
+    loads(xhr, ee);
+
+    xhr.emit('timeout');
+    xhr.emit('error');
+    xhr.emit('end');
   });
 });
