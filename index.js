@@ -96,6 +96,7 @@ function loads(xhr, ee, streaming) {
    */
   ontimeout = xhr.ontimeout = function timeout(evt) {
     ee.emit('timeout', evt);
+    onerror(evt);
   };
 
   /**

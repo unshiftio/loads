@@ -68,4 +68,24 @@ describe('loads', function () {
 
     loads(xhr, ee).emit('abort');
   });
+
+  it('emits, timeout, error, end on connection timeout', function (next) {
+    var flow = '';
+
+    ee
+    .on('timeout', function () {
+      flow += 'timeout';
+    })
+    .on('error', function (err) {
+      assume(err).is.an('error');
+      flow += 'error';
+    })
+    .on('end', function (err) {
+      assume(err).is.an('error');
+      assume(flow).equals('timeouterror');
+      next();
+    });
+
+    loads(xhr, ee).emit('timeout');
+  });
 });
