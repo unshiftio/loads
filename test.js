@@ -9,7 +9,7 @@ describe('loads', function () {
     , ee;
 
   beforeEach(function () {
-    xhr = eventstub('error, readystatechange, timeout, progress, load');
+    xhr = eventstub('error, readystatechange, timeout, progress, load, abort');
     ee = new EventEmitter();
   });
 
@@ -27,14 +27,45 @@ describe('loads', function () {
   });
 
   it('emits `end` _after_ when an error occures', function (next) {
-    next = assume.plan(1, next);
+    next = assume.plan(2, next);
 
     ee
-    .on('end', next)
+    .on('end', function (err) {
+      assume(err).instanceOf(Error);
+      next();
+    })
     .on('error', function (e) {
       assume(e).instanceOf(Error);
     });
 
     loads(xhr, ee).emit('error');
+  });
+
+  it('emits an `error` before `end` when `load` has an incorrect status', function (next) {
+    next = assume.plan(3, next);
+
+    ee
+    .on('end', function (err) {
+      assume(err).instanceOf(Error);
+      next();
+    })
+    .on('error', function (e) {
+      assume(e).instanceOf(Error);
+      assume(e.message).contains('request failed');
+    });
+
+    xhr.status = 6000;
+    loads(xhr, ee).emit('load');
+  });
+
+  it('emits an error when the connection is abort', function (next) {
+    ee
+    .on('error', function (e) {
+      assume(e).instanceOf(Error);
+      assume(e.message).contains('request failed');
+      next();
+    });
+
+    loads(xhr, ee).emit('abort');
   });
 });

@@ -56,8 +56,10 @@ function loads(xhr, ee, streaming) {
    * @api private
    */
   onerror = xhr.onerror = one(function onerror(evt) {
-    ee.emit('error', new Error('Network request failed'));
-    ee.emit('end');
+    var err = new Error('Network request failed');
+
+    ee.emit('error', err);
+    ee.emit('end', err);
   });
 
   /**
