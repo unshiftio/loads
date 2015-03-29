@@ -94,10 +94,22 @@ function loads(xhr, ee, streaming) {
    *
    * @api private
    */
-  ontimeout = xhr.ontimeout = function timeout(evt) {
+  ontimeout = xhr.ontimeout = one(function timeout(evt) {
     ee.emit('timeout', evt);
+
+    //
+    // Make sure that the request is aborted when there is a timeout. If this
+    // doesn't trigger an error, the next call will.
+    //
+    if (xhr.abort) xhr.abort();
     onerror(evt);
-  };
+  });
+
+  //
+  // Fallback, improve reliability by using an extra that will trigger request
+  // failure no matter what happens.
+  //
+  if (xhr.timeout) setTimeout(ontimeout, +xhr.timeout);
 
   /**
    * IE needs have it's `onprogress` function assigned to a unique function. So,
