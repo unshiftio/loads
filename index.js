@@ -34,6 +34,7 @@ var codes = {
 };
 
 /**
+ * Attach various of event listeners to a given XHR request.
  *
  * @param {XHR} xhr A XHR request that requires listening.
  * @param {EventEmitter} ee EventEmitter that receives events.
@@ -51,7 +52,7 @@ function loads(xhr, ee, streaming) {
   /**
    * Error listener.
    *
-   * @param {Event} evt Triggered readyState change event.
+   * @param {Event} evt Triggered error event.
    * @api private
    */
   onerror = xhr.onerror = one(function onerror(evt) {
@@ -67,6 +68,8 @@ function loads(xhr, ee, streaming) {
    * @see https://bugzilla.mozilla.org/show_bug.cgi?id=768596
    * @see https://bugzilla.mozilla.org/show_bug.cgi?id=880200
    * @see https://code.google.com/p/chromium/issues/detail?id=153570
+   * @param {Event} evt Triggerd abort event
+   * @api private
    */
   onabort = xhr.onabort = function onabort(evt) {
     onerror(evt);
@@ -112,8 +115,10 @@ function loads(xhr, ee, streaming) {
   };
 
   /**
+   * Handle load events an potential data events for when there was no streaming
+   * data.
    *
-   * @param {Event} evt Triggered progress event.
+   * @param {Event} evt Triggered load event.
    * @api private
    */
   onload = xhr.onload = one(function load(evt) {
