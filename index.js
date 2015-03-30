@@ -47,7 +47,8 @@ function loads(xhr, ee, streaming) {
     , ontimeout
     , onabort
     , onerror
-    , onload;
+    , onload
+    , timer;
 
   /**
    * Error listener.
@@ -109,7 +110,7 @@ function loads(xhr, ee, streaming) {
   // Fallback, improve reliability by using an extra that will trigger request
   // failure no matter what happens.
   //
-  if (xhr.timeout) setTimeout(ontimeout, +xhr.timeout);
+  if (xhr.timeout) timer = setTimeout(ontimeout, +xhr.timeout);
 
   /**
    * IE needs have it's `onprogress` function assigned to a unique function. So,
@@ -144,6 +145,21 @@ function loads(xhr, ee, streaming) {
     if (data) ee.emit('stream', data);
 
     ee.emit('end');
+  });
+
+  //
+  // Properly clean up the previously assigned event listeners and timers to
+  // prevent potential data leaks and unwanted `stream` events.
+  //
+  ee.once('end', function cleanup() {
+    xhr.onreadystatechange = onreadystatechange =
+    xhr.onprogress = onprogress =
+    xhr.ontimeout = ontimeout =
+    xhr.onerror = onerror =
+    xhr.onabort = onabort =
+    xhr.onload = onload = nope;
+
+    if (timer) clearTimeout(timer);
   });
 
   return xhr;
