@@ -107,8 +107,11 @@ function loads(xhr, ee, streaming) {
   });
 
   //
-  // Fallback, improve reliability by using an extra that will trigger request
-  // failure no matter what happens.
+  // Fallback for implementations that did not ship with timer support yet.
+  // Microsoft's XDomainRequest was one of the first to ship with `.timeout`
+  // support so we all XHR implementations before that require a polyfill.
+  //
+  // @see https://bugzilla.mozilla.org/show_bug.cgi?id=525816
   //
   if (xhr.timeout) timer = setTimeout(ontimeout, +xhr.timeout);
 
