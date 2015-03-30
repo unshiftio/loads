@@ -25,6 +25,26 @@ public npm registry. It can be installed by running:
 npm install --save loads
 ```
 
+## Usage
+
+```js
+var loads = require('loads')
+  , xhr = new XMLHTTPRequest()
+  , EventEmitter = require('events').EventEmitter;
+
+var ee = new EventEmitter();
+loads(xhr, ee);
+
+ee.on('stream', function (data) {
+  // data chunks received.
+});
+
+ee.on('end', function () {});
+
+xhr.open(url);
+xhr.send();
+```
+
 ## License
 
 MIT
