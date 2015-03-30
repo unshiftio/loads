@@ -92,4 +92,18 @@ describe('loads', function () {
     xhr.emit('error');
     xhr.emit('end');
   });
+
+  it('calls xhr.abort when we timeout', function (next) {
+    var start = Date.now();
+
+    xhr.timeout = 200;
+    xhr.abort = function () {
+      var taken = Date.now() - start;
+
+      assume(taken).is.atleast(200);
+      next();
+    };
+
+    loads(xhr, ee);
+  });
 });
