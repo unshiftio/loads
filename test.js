@@ -115,10 +115,15 @@ describe('loads', function () {
     /* istanbul ignore next */
     .on('error', function (err) {
       throw err;
+    })
+    /* istanbul ignore next */
+    .on('timeout', function (err) {
+      throw err;
     });
 
-    xhr.timeout = 200;
-    loads(xhr, ee).emit('load');
+    xhr.timeout = 10;
+    loads(xhr, ee);
+    ee.emit('end');
   });
 
   it('emits a `stream` event when onload has data', function (next) {
