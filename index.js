@@ -38,10 +38,9 @@ var codes = {
  *
  * @param {XHR} xhr A XHR request that requires listening.
  * @param {EventEmitter} ee EventEmitter that receives events.
- * @param {Boolean} streaming Are we streaming data.
  * @api public
  */
-function loads(xhr, ee, streaming) {
+function loads(xhr, ee) {
   var onreadystatechange
     , onprogress
     , ontimeout

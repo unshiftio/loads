@@ -10,6 +10,8 @@ describe('loads', function () {
 
   beforeEach(function () {
     xhr = eventstub('error, readystatechange, timeout, progress, load, abort');
+    xhr.status = 200;
+
     ee = new EventEmitter();
   });
 
@@ -105,5 +107,43 @@ describe('loads', function () {
     };
 
     loads(xhr, ee);
+  });
+
+  it('kills assigned event listeners & timers on end', function (next) {
+    ee
+    .on('end', next)
+    /* istanbul ignore next */
+    .on('error', function (err) {
+      throw err;
+    });
+
+    xhr.timeout = 200;
+    loads(xhr, ee).emit('load');
+  });
+
+  it('emits a `stream` event when onload has data', function (next) {
+    ee.on('stream', function (chunk) {
+      assume(chunk).equals('foo');
+      next();
+    });
+
+    xhr.status = 200;
+    xhr.responseText = 'foo';
+    loads(xhr, ee).emit('load');
+  });
+
+  it('cannot receive data after an end event', function (next) {
+    ee
+    /* istanbul ignore next */
+    .on('stream', function () {
+      throw new Error('I should never be called');
+    })
+    .on('end', next);
+
+    loads(xhr, ee);
+    xhr.emit('load');
+
+    xhr.responseText = 'foo';
+    xhr.emit('load');
   });
 });
