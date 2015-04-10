@@ -28,8 +28,10 @@
   },
   "homepage": "https://github.com/unshiftio/loads",
   "dependencies": {
+    "failure": "1.0.x",
     "one-time": "0.0.x",
-    "xhr-response": "1.0.x"
+    "xhr-response": "1.0.x",
+    "xhr-status": "1.0.x"
   },
   "devDependencies": {
     "assume": "1.2.x",

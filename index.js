@@ -1,7 +1,9 @@
 'use strict';
 
 var response = require('xhr-response')
-  , one = require('one-time');
+  , statuscode = require('xhr-status')
+  , one = require('one-time')
+  , fail = require('failure');
 
 /**
  * Simple nope function that assigned to XHR requests as part of a clean-up
@@ -10,28 +12,6 @@ var response = require('xhr-response')
  * @api private
  */
 function nope() {}
-
-/**
- * Status codes that might need to be mapped to something more sane.
- *
- * @type {Object}
- * @private
- */
-var codes = {
-  //
-  // If you make a request with a file:// protocol it returns status code 0 by
-  // default so we're going to assume 200 instead.
-  //
-  0: 200,
-
-  //
-  // Older version IE incorrectly return status code 1233 for requests that
-  // respond with a 204 header.
-  //
-  // @see http://stackoverflow.com/q/10046972
-  //
-  1233: 204
-};
 
 /**
  * Attach various of event listeners to a given XHR request.
@@ -56,7 +36,10 @@ function loads(xhr, ee) {
    * @api private
    */
   onerror = xhr.onerror = one(function onerror(evt) {
-    var err = new Error('Network request failed');
+    var err = fail(
+      new Error('Network request failed'),
+      statuscode(xhr)
+    );
 
     ee.emit('error', err);
     ee.emit('end', err);
@@ -122,12 +105,12 @@ function loads(xhr, ee) {
    * @api private
    */
   onprogress = xhr.onprogress = function progress(evt) {
-    var status = codes[xhr.status] || xhr.status
+    var status = statuscode(xhr.status)
       , data;
 
     ee.emit('progress', evt, status);
 
-    if (xhr.readyState >= 3 && status === 200 && (data = response(xhr))) {
+    if (xhr.readyState >= 3 && status.code === 200 && (data = response(xhr))) {
       ee.emit('stream', data);
     }
   };
@@ -140,10 +123,10 @@ function loads(xhr, ee) {
    * @api private
    */
   onload = xhr.onload = one(function load(evt) {
-    var status = codes[xhr.status] || xhr.status
+    var status = statuscode(xhr.status)
       , data = response(xhr);
 
-    if (status < 100 || status > 599) return onerror(evt);
+    if (status.code < 100 || status.code > 599) return onerror(evt);
     if (data) ee.emit('stream', data);
 
     ee.emit('end');
