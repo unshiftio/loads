@@ -105,7 +105,7 @@ function loads(xhr, ee) {
    * @api private
    */
   onprogress = xhr.onprogress = function progress(evt) {
-    var status = statuscode(xhr.status)
+    var status = statuscode(xhr)
       , data;
 
     ee.emit('progress', evt, status);
@@ -123,7 +123,7 @@ function loads(xhr, ee) {
    * @api private
    */
   onload = xhr.onload = one(function load(evt) {
-    var status = statuscode(xhr.status)
+    var status = statuscode(xhr)
       , data = response(xhr);
 
     if (status.code < 100 || status.code > 599) return onerror(evt);
