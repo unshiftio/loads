@@ -36,13 +36,11 @@ function loads(xhr, ee) {
    * @api private
    */
   onerror = xhr.onerror = one(function onerror(evt) {
-    var err = fail(
-      new Error('Network request failed'),
-      statuscode(xhr)
-    );
+    var status = statuscode(xhr)
+      , err = fail(new Error('Network request failed'), status);
 
     ee.emit('error', err);
-    ee.emit('end', err);
+    ee.emit('end', err, status);
   });
 
   /**
@@ -129,7 +127,7 @@ function loads(xhr, ee) {
     if (status.code < 100 || status.code > 599) return onerror(evt);
     if (data) ee.emit('stream', data);
 
-    ee.emit('end');
+    ee.emit('end', undefined, status);
   });
 
   //

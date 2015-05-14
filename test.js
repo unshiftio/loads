@@ -43,6 +43,20 @@ describe('loads', function () {
     loads(xhr, ee).emit('error');
   });
 
+  it('receives the status code in the `end` event', function (next) {
+    next = assume.plan(2, next);
+
+    ee
+    .on('end', function (err, status) {
+      assume(err).to.be.a('undefined');
+      assume(status.code).equals(200);
+
+      next();
+    });
+
+    loads(xhr, ee).emit('load');
+  });
+
   it('emits an `error` before `end` when `load` has an incorrect status', function (next) {
     next = assume.plan(3, next);
 
