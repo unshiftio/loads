@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/unshiftio/loads",
   "dependencies": {
-    "failure": "1.0.x",
+    "failure": "1.1.x",
     "one-time": "0.0.x",
     "xhr-response": "1.0.x",
     "xhr-status": "1.0.x"
@@ -38,6 +38,6 @@
     "eventstub": "1.0.x",
     "istanbul": "0.3.x",
     "mocha": "2.2.x",
-    "pre-commit": "1.0.x"
+    "pre-commit": "1.1.x"
   }
 }
