@@ -1,9 +1,6 @@
 # loads
 
-[![Made by unshift][made-by]](http://unshift.io)[![Version
-npm][version]](http://browsenpm.org/package/loads)[![Build
-Status][build]](https://travis-ci.org/unshiftio/loads)[![Dependencies][david]](https://david-dm.org/unshiftio/loads)[![Coverage
-Status][cover]](https://coveralls.io/r/unshiftio/loads?branch=master)[![IRC channel][irc]](http://webchat.freenode.net/?channels=unshift)
+[![Made by unshift][made-by]](http://unshift.io)[![Version npm][version]](http://browsenpm.org/package/loads)[![Build Status][build]](https://travis-ci.org/unshiftio/loads)[![Dependencies][david]](https://david-dm.org/unshiftio/loads)[![Coverage Status][cover]](https://coveralls.io/r/unshiftio/loads?branch=master)[![IRC channel][irc]](https://webchat.freenode.net/?channels=unshift)
 
 [made-by]: https://img.shields.io/badge/made%20by-unshift-00ffcc.svg?style=flat-square
 [version]: https://img.shields.io/npm/v/loads.svg?style=flat-square
@@ -12,8 +9,8 @@ Status][cover]](https://coveralls.io/r/unshiftio/loads?branch=master)[![IRC chan
 [cover]: https://img.shields.io/coveralls/unshiftio/loads/master.svg?style=flat-square
 [irc]: https://img.shields.io/badge/IRC-irc.freenode.net%23unshift-00a8ff.svg?style=flat-square
 
-Loads is a small helper library which automatically assign and listen to the
-various of XHR event hooks and emit the corrected and normalized responses over
+Loads is a small helper library which automatically assigns and listens to the
+various of XHR event hooks and emits the corrected and normalized responses over
 a supplied EventEmitter instance.
 
 ## Installation
@@ -36,7 +33,7 @@ var ee = new EventEmitter();
 loads(xhr, ee);
 
 ee.on('stream', function (data) {
-  // data chunks received.
+  // data chunk received.
 });
 
 ee.on('end', function () {});
@@ -47,4 +44,4 @@ xhr.send();
 
 ## License
 
-MIT
+[MIT](LICENSE)
