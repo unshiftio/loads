@@ -109,7 +109,7 @@ function loads(xhr, ee) {
     ee.emit('progress', evt, status);
 
     if (xhr.readyState >= 3 && status.code === 200 && (data = response(xhr))) {
-      ee.emit('stream', data);
+      ee.emit('stream', data, status);
     }
   };
 
@@ -125,7 +125,16 @@ function loads(xhr, ee) {
       , data = response(xhr);
 
     if (status.code < 100 || status.code > 599) return onerror(evt);
-    if (data) ee.emit('stream', data);
+
+    //
+    // There is a bug in FireFox's XHR2 implementation where status code 204
+    // triggers a "no element found" error and bad data. So to be save here,
+    // we're just **never** going to emit a `stream` event as for 204's there
+    // shouldn't be any content.
+    //
+    if (data && status.code !== 204) {
+      ee.emit('stream', data, status);
+    }
 
     ee.emit('end', undefined, status);
   });

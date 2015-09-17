@@ -141,7 +141,8 @@ describe('loads', function () {
   });
 
   it('emits a `stream` event when onload has data', function (next) {
-    ee.on('stream', function (chunk) {
+    ee.on('stream', function (chunk, status) {
+      assume(status.code).equals(200);
       assume(chunk).equals('foo');
       next();
     });
@@ -164,5 +165,18 @@ describe('loads', function () {
 
     xhr.responseText = 'foo';
     xhr.emit('load');
+  });
+
+  it('it should never call the stream event for 204s', function (next) {
+    ee
+    /* istanbul ignore next */
+    .on('stream', function (chunk, status) {
+      throw new Error('I should never be called');
+    })
+    .on('end', next);
+
+    xhr.status = 204;
+    xhr.responseText = 'foo';
+    loads(xhr, ee).emit('load');
   });
 });
