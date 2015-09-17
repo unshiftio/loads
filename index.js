@@ -132,6 +132,8 @@ function loads(xhr, ee) {
     // we're just **never** going to emit a `stream` event as for 204's there
     // shouldn't be any content.
     //
+    // @see https://bugzilla.mozilla.org/show_bug.cgi?id=521301
+    //
     if (data && status.code !== 204) {
       ee.emit('stream', data, status);
     }
